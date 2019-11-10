@@ -34,6 +34,8 @@ class Command(BaseCommand):
             for row in tqdm(
                 reader, total=row_count, desc="Processing file...", unit="rows "
             ):
+                if row["latitude"] == "" or row["longitude"] == "":
+                    break
                 coord_counts[(row["latitude"], row["longitude"])] += 1
             created_count = 0
             updated_count = 0
