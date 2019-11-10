@@ -35,24 +35,25 @@ class Command(BaseCommand):
                 reader, total=row_count, desc="Processing file...", unit="rows "
             ):
                 if row["latitude"] == "" or row["longitude"] == "":
-                    break
+                    continue
                 coord_counts[(row["latitude"], row["longitude"])] += 1
             created_count = 0
             updated_count = 0
+            ipcoords = []
             for coord, count in tqdm(
                 coord_counts.items(),
                 total=len(coord_counts),
-                desc="Updating database...",
+                desc="Creating model instances to be bulk loaded...",
             ):
-                ipcoord, created = IPCoord.objects.update_or_create(
-                    latitude=Decimal(coord[0]),
-                    longitude=Decimal(coord[1]),
-                    defaults={"count": count},
+                ipcoords.append(
+                    IPCoord(
+                        latitude=Decimal(coord[0]),
+                        longitude=Decimal(coord[1]),
+                        count=count,
+                    )
                 )
-                if created:
-                    created_count += 1
-                else:
-                    updated_count += 1
+            self.stdout.write("Sending objects to database...")
+            IPCoord.objects.bulk_create(ipcoords, batch_size=1000)
         if created_count:
             self.stdout.write(
                 self.style.SUCCESS(f"Created {created_count} coordinates.")
@@ -61,7 +62,7 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS(f"Updated {updated_count} coordinates.")
             )
-        self.stdout.write(style.SUCCESS("All Done!"))
+        self.stdout.write(self.style.SUCCESS("All Done!"))
 
     def handle(self, *args, **options):
         self.load_data(options.get("csvfile"))
