@@ -11,15 +11,11 @@ class IPCoordsListViewTestCase(APITestCase):
         # given a set of existing IPCoords...
         ipcoords = IPCoordFactory.create_batch(2)
         # when a get requests is made to the view...
-        response = self.client.get(reverse("ipcoord_view"))
+        response = self.client.get(reverse("ipcoords_list_view"))
         # a json list of coordinate objects is returned...
         expected_response = []
         for ipcoord in ipcoords:
             expected_response.append(
-                {
-                    "latitude": ipcoord.latitude,
-                    "longitude": ipcoord.longitude,
-                    "count": ipcoord.count,
-                }
+                [f"{ipcoord.latitude:.6f}", f"{ipcoord.longitude:.6f}", ipcoord.count]
             )
         self.assertListEqual(expected_response, response.json())
