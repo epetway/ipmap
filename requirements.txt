@@ -1,3 +1,5 @@
 Django~=2.2.0
+djangorestframework~=3.10.0
 mysqlclient~=1.4.0
 tqdm~=4.38.0
+factory-boy~=2.12.0
