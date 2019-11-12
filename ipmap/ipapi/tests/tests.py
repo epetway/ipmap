@@ -19,3 +19,9 @@ class IPCoordsListViewTestCase(APITestCase):
                 [f"{ipcoord.latitude:.6f}", f"{ipcoord.longitude:.6f}", ipcoord.count]
             )
         self.assertListEqual(expected_response, response.json())
+
+
+class IPCoordMapView(TestCase):
+    def test_ipmap_view_returns_200(self):
+        response = self.client.get(reverse("ip_map_view"))
+        self.assertEqual(response.status_code, 200)
