@@ -105,3 +105,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# my geo data csv
+GeoLite2-City-Blocks-IPv4.csv
