@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from os import getenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "q45cpy8dwp)*i##c0mk)aq66e*wzt*#5fj_@eem)zr9utly8(j"
+SECRET_KEY = getenv("SECRET_KEY", "q45cpy8dwp)*i##c0mk)aq66e*wzt*#5fj_@eem)zr9utly8(j")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(getenv("DEBUG", True))
 
 ALLOWED_HOSTS = []
 
@@ -79,12 +80,12 @@ WSGI_APPLICATION = "ipmap.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "ipmap",
-        "USER": "root",
-        "PASSWORD": "password",
-        "HOST": "db",
-        "PORT": 3306,
+        "ENGINE": getenv("DB_ENGINE", "django.db.backends.mysql"),
+        "NAME": getenv("DB_NAME", "ipmap"),
+        "USER": getenv("DB_USER", "root"),
+        "PASSWORD": getenv("DB_PASSWORD", "password"),
+        "HOST": getenv("DB_HOST", "db"),
+        "PORT": int(getenv("DB_PORT", 3306)),
     }
 }
 
@@ -122,4 +123,9 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 # CORS settings
-CORS_ORIGIN_WHITELIST = ("http://localhost:3000",)
+# Set your env variable as a comma separated list.
+# example:
+# CORS_WHITELIST=http://somesite.com,http://othersite.com
+CORS_ORIGIN_WHITELIST = tuple(
+    getenv("CORS_ORIGIN_WHITELIST", "http://localhost:3000").split(",")
+)
