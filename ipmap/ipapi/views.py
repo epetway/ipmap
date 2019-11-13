@@ -6,5 +6,16 @@ from .serializers import IPCoordSerializer
 
 
 class IPCoordListView(ListAPIView):
-    queryset = IPCoord.objects.all()[:100]
+    """
+    Return a list of IP address coordinates, along with
+    counts of how many IP addresses are at that specific coordinate.
+
+    get:
+        [
+            [<lattitude>, <longitude>, <count>],
+            ...
+        ]
+    """
+
+    queryset = IPCoord.objects.all()
     serializer_class = IPCoordSerializer

@@ -37,8 +37,6 @@ class Command(BaseCommand):
                 if row["latitude"] == "" or row["longitude"] == "":
                     continue
                 coord_counts[(row["latitude"], row["longitude"])] += 1
-            created_count = 0
-            updated_count = 0
             ipcoords = []
             for coord, count in tqdm(
                 coord_counts.items(),
@@ -52,17 +50,13 @@ class Command(BaseCommand):
                         count=count,
                     )
                 )
+            IPCoord.objects.all().delete()
             self.stdout.write("Sending objects to database...")
             IPCoord.objects.bulk_create(ipcoords, batch_size=1000)
-        if created_count:
-            self.stdout.write(
-                self.style.SUCCESS(f"Created {created_count} coordinates.")
-            )
-        if updated_count:
-            self.stdout.write(
-                self.style.SUCCESS(f"Updated {updated_count} coordinates.")
-            )
-        self.stdout.write(self.style.SUCCESS("All Done!"))
+        self.stdout.write(
+            self.style.SUCCESS(f"Created {len(coord_counts)} coordinates.")
+        )
+        self.stdout.write(self.style.SUCCESS("Done!"))
 
     def handle(self, *args, **options):
         self.load_data(options.get("csvfile"))

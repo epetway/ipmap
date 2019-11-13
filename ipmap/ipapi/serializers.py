@@ -9,6 +9,6 @@ class IPCoordSerializer(serializers.ModelSerializer):
         fields = ["latitude", "longitude", "count"]
 
     def to_representation(self, instance):
-        """Convert `username` to lowercase."""
+        # Returning a pure array to reduce response size.
         ret = super().to_representation(instance)
         return [ret["latitude"], ret["longitude"], ret["count"]]
