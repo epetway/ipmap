@@ -1,1 +1,1 @@
-web: gunicorn ipmap.wsgi
+web: gunicorn --pythonpath ipmap ipmap.wsgi
