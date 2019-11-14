@@ -127,8 +127,11 @@ STATIC_URL = "/static/"
 # Set your env variable as a comma separated list.
 # example:
 # CORS_WHITELIST=http://somesite.com,http://othersite.com
-CORS_ORIGIN_WHITELIST = tuple(
-    getenv("CORS_ORIGIN_WHITELIST", "http://localhost:3000").split(",")
+# CORS_ORIGIN_WHITELIST = tuple(
+#     getenv("CORS_ORIGIN_WHITELIST", "http://localhost:3000").split(",")
+# )
+CORS_ORIGIN_ALLOW_ALL = (
+    True if getenv("CORS_ORIGIN_ALLOW_ALL", default).lower() == "true" else False
 )
 
 # Activate Django-Heroku.
