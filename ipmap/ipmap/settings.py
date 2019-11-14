@@ -131,7 +131,7 @@ STATIC_URL = "/static/"
 #     getenv("CORS_ORIGIN_WHITELIST", "http://localhost:3000").split(",")
 # )
 CORS_ORIGIN_ALLOW_ALL = (
-    True if getenv("CORS_ORIGIN_ALLOW_ALL", default).lower() == "true" else False
+    True if getenv("CORS_ORIGIN_ALLOW_ALL", "true").lower() == "true" else False
 )
 
 # Activate Django-Heroku.
