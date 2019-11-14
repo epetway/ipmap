@@ -15,6 +15,6 @@ class IPCoordsListViewTestCase(APITestCase):
         expected_response = []
         for ipcoord in ipcoords:
             expected_response.append(
-                [f"{ipcoord.latitude:.6f}", f"{ipcoord.longitude:.6f}", ipcoord.count]
+                [f"{ipcoord.latitude:.4f}", f"{ipcoord.longitude:.4f}", ipcoord.count]
             )
         self.assertListEqual(expected_response, response.json())
